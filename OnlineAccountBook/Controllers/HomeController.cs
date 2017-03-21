@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using OnlineAccountBook.Models.ViewModels;
 using OnlineAccountBook.Models;
 using OnlineAccountBook.Repositories;
+using PagedList;
 
 namespace OnlineAccountBook.Controllers
 {
@@ -25,43 +26,14 @@ namespace OnlineAccountBook.Controllers
         }
                 
         [ChildActionOnly]
-        public ActionResult AccountTableChildAction()
+        public ActionResult AccountTableChildAction(int page =1, int pageSize =10)
         {
-            #region 模擬資料 (Comment)
-            //models.Add(new AccountItemViewModels
-            //{
-            //    Category = "支出",
-            //    Date = new DateTime(2017, 01, 01),
-            //    Money = 2000,
-            //    Description = "水電",
-            //});
+            int currentPage = page < 1 ? 1 : page;
 
-            //models.Add(new AccountItemViewModels
-            //{
-            //    Category = "支出",
-            //    Date = new DateTime(2017, 02, 01),
-            //    Money = 2500,
-            //    Description = "水電",
-            //});
-
-            //models.Add(new AccountItemViewModels
-            //{
-            //    Category = "支出",
-            //    Date = new DateTime(2017, 03, 01),
-            //    Money = 2200,
-            //    Description = "水電",
-            //});
-
-            //models.Add(new AccountItemViewModels
-            //{
-            //    Category = "支出",
-            //    Date = new DateTime(2017, 04, 01),
-            //    Money = 15000,
-            //    Description = "水電",
-            //});
-            #endregion
-
-            var models = _accountBookService.Lookup();            
+            var models = _accountBookService.Lookup()
+                .OrderBy(d=>d.Date)
+                .ToPagedList(currentPage, pageSize);  //分頁
+            
             return View(models);
         }
 

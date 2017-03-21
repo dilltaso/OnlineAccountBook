@@ -4,44 +4,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using PagedList;
 
 namespace OnlineAccountBook.Models
 {
     public class AccountBookService
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _dbUnitOfWork;
 
-        //private readonly IRepository<AccountBookDBTable> _accountBookDBA;  //Repository 部分尚未完成, 無法正確抓取資料庫data, 先註解之
-
-        private AccountBookDBEntities _db;        
+        private readonly IRepository<AccountBookDBTable> _dbRepository;
 
         public AccountBookService(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
+            _dbUnitOfWork = unitOfWork;
 
-            //_accountBookDBA = new Repository<AccountBookDBTable>(unitOfWork);
-            _db = new AccountBookDBEntities();
+            _dbRepository = new Repository<AccountBookDBTable>(unitOfWork);
         }
 
-        public IEnumerable<AccountItemViewModels> Lookup()
+        public IQueryable<AccountItemViewModels> Lookup()
         {
-            //var source = _accountBookDBA.LookupAll();   //Repository 部分尚未完成, 無法正確抓取資料庫data, 先註解之
+            var source = _dbRepository.LookupAll();
 
-            var source = _db.AccountBook;
             var result = source.Select(data => new AccountItemViewModels()
             {
-                Category = (data.Categoryyy ==0 ? "收入":"支出"),
+                Category = (data.Categoryyy == 0 ? "收入" : "支出"),
                 Date = data.Dateee,
                 Money = data.Amounttt,
                 Description = data.Remarkkk
-            }).ToList();
+            });
 
             return result;
         }
 
         public void Add(AccountItemViewModels newData)
         {
-            //var result = new AccountBookDBTable()   //Repository 部分尚未完成, 無法正確抓取資料庫data, 先註解之
+            //var result = new AccountBookDBTable()
             //{
             //    Categoryyy = (newData.Category == "收入"? 0:1),
             //    Dateee = newData.Date,
@@ -49,13 +46,13 @@ namespace OnlineAccountBook.Models
             //    Remarkkk = newData.Description
             //};
 
-            //_accountBookDBA.Create(result);
+            //_dbRepository.Create(result);
         }
 
 
         public void Save()
         {
-            _unitOfWork.Save();
+            _dbUnitOfWork.Save();
         }
     }
 }
