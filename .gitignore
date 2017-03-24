@@ -240,3 +240,8 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/OnlineAccountBook/Views/Home/Index_helper.cshtml
+/OnlineAccountBook/Views/Home/Index.cshtml_works
+/OnlineAccountBook/Views/Home/Index.cshtml_final
+/OnlineAccountBook/Views/Home/Index.cshtml_
+/OnlineAccountBook/Views/Home/Index (2).cshtml_

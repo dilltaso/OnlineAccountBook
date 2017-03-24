@@ -5,7 +5,7 @@ using System.Web;
 
 namespace OnlineAccountBook.Models.ViewModels
 {
-    public class AccountItemViewModels
+    public class AccountItemViewModel
     {
         /// <summary>
         /// 類別

@@ -20,10 +20,20 @@ namespace OnlineAccountBook.Controllers
             _accountBookService = new AccountBookService(efUnitOfWork);
         }
 
+        [HttpGet]
         public ActionResult Index()
-        {            
+        {
             return View();
         }
+
+        [HttpPost]
+        public ActionResult Index(AccountItemViewModel record)
+        {
+            _accountBookService.Add(record);
+            _accountBookService.Save();
+            return View();
+        }
+
                 
         [ChildActionOnly]
         public ActionResult AccountTableChildAction(int page =1, int pageSize =10)
@@ -31,7 +41,7 @@ namespace OnlineAccountBook.Controllers
             int currentPage = page < 1 ? 1 : page;
 
             var models = _accountBookService.Lookup()
-                .OrderBy(d=>d.Date)
+                .OrderByDescending(d=>d.Date)         //降冪排序
                 .ToPagedList(currentPage, pageSize);  //分頁
             
             return View(models);

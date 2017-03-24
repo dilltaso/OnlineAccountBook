@@ -21,13 +21,13 @@ namespace OnlineAccountBook.Models
             _dbRepository = new Repository<AccountBookDBTable>(unitOfWork);
         }
 
-        public IQueryable<AccountItemViewModels> Lookup()
+        public IQueryable<AccountItemViewModel> Lookup()
         {
             var source = _dbRepository.LookupAll();
 
-            var result = source.Select(data => new AccountItemViewModels()
+            var result = source.Select(data => new AccountItemViewModel()
             {
-                Category = (data.Categoryyy == 0 ? "收入" : "支出"),
+                Category = (data.Categoryyy == 1 ? "收入" : "支出"),
                 Date = data.Dateee,
                 Money = data.Amounttt,
                 Description = data.Remarkkk
@@ -36,17 +36,18 @@ namespace OnlineAccountBook.Models
             return result;
         }
 
-        public void Add(AccountItemViewModels newData)
+        public void Add(AccountItemViewModel newData)
         {
-            //var result = new AccountBookDBTable()
-            //{
-            //    Categoryyy = (newData.Category == "收入"? 0:1),
-            //    Dateee = newData.Date,
-            //    Amounttt = (int)newData.Money,
-            //    Remarkkk = newData.Description
-            //};
+            var result = new AccountBookDBTable()
+            {
+                Id = Guid.NewGuid(),
+                Categoryyy = (newData.Category == "收入" ? 1 : 0),
+                Dateee = newData.Date,
+                Amounttt = (int)newData.Money,
+                Remarkkk = newData.Description
+            };
 
-            //_dbRepository.Create(result);
+            _dbRepository.Create(result);
         }
 
 
