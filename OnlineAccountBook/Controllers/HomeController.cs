@@ -29,8 +29,11 @@ namespace OnlineAccountBook.Controllers
         [HttpPost]
         public ActionResult Index(AccountItemViewModel record)
         {
-            _accountBookService.Add(record);
-            _accountBookService.Save();
+            if (ModelState.IsValid == true)
+            {
+                _accountBookService.Add(record);
+                _accountBookService.Save();
+            }
             return View();
         }
 

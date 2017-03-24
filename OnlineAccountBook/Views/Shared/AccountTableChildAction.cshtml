@@ -7,26 +7,27 @@
 @*@model List < OnlineAccountBook.Models.ViewModels.AccountItemViewModels > *@
 @model IEnumerable<OnlineAccountBook.Models.ViewModels.AccountItemViewModel> 
 
-@{ int serial = 0;}
+@using OnlineAccountBook.ExtensionMethods;
 
+@{ int serial = 0;}
 <div class="row">
     <div class="col-md-12">
         <table class="table table-bordered table-hover">
             <tr>
-                <th>#</th>
-                <th>類別</th>
-                <th>日期</th>
-                <th>金額</th>
-                <th>備註</th>
+                <th class="col-md-1 text-center">#</th>
+                <th class="col-md-2 text-center">類別</th>
+                <th class="col-md-2 text-center">日期</th>
+                <th class="col-md-2 text-center">金額</th>
+                <th class="col-md-5">備註</th>
             </tr>
             @foreach (var data in Model)
             {
                 <tr>
                     <td>@(serial++)</td>
-                    <td>@data.Category</td>
+                    <td>@Html.DoColorLabel(data.Category)</td>
                     <td>@data.Date.ToString("yyyy-MM-dd")</td>
                     <td>@data.Money.ToString("N0")</td>
-                    <td>@data.Description</td>
+                    <td class="word-wrap">@data.Description</td>
                 </tr>
             }
         </table>
